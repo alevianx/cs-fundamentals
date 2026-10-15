@@ -1,0 +1,23 @@
+# C++ build artifacts
+*.i
+*.s
+*.o
+*.obj
+*.out
+*.exe
+a.out
+*.dSYM/
+
+# Java
+*.class
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
