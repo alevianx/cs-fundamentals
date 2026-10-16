@@ -17,6 +17,12 @@ cs-fundamentals/
 ├── 04-algorithms/                   # Implementations & complexity analysis
 └── 05-concurrency-and-systems/      # Threads, processes, and execution
 
+Environment:
+
+├── docker/Dockerfile                # Lab image: C++, Java, Python + inspection tools
+├── compose.yaml                     # Run the lab from any terminal
+└── .devcontainer/                   # Open the repo inside the lab with VS Code
+
 Each topic follows the same layout:
 
 NN-topic/
@@ -47,6 +53,38 @@ NN-topic/
 
 * **Low-Level Execution**
   Inspect assembly, machine instructions, bytecode, memory addresses, processes, threads, and system calls.
+
+---
+
+## 🐳 Lab Environment
+
+All experiments run inside a single Linux container, so every tool behaves the same on any machine and the generated output (assembly, bytecode, addresses) stays reproducible.
+
+| Tool | Version |
+|---|---|
+| Base image | Ubuntu 24.04 |
+| C / C++ | g++ 13.3 · gdb 15.1 · valgrind 3.22 · binutils (`objdump`) |
+| Java | OpenJDK 21 (`javac`, `javap`, `java`) |
+| Python | CPython 3.12 (`python -m dis`) |
+| System | `strace` · `ltrace` · `setarch` · `hyperfine` · `procps` |
+
+### Option A — VS Code Dev Container (recommended)
+
+1. Install Docker Desktop and the VS Code extension **Dev Containers** (`ms-vscode-remote.remote-containers`).
+2. Open the repository in VS Code → **"Reopen in Container"**.
+
+VS Code runs its language extensions *inside* the container, so IntelliSense, diagnostics and debugging use the exact same g++ (C++20), JDK 21 and Python 3.12 that compile the code.
+
+### Option B — Terminal
+
+```bash
+docker compose build          # first time only
+docker compose run --rm lab   # interactive shell in /workspace
+```
+
+> **Note:** The container runs with `SYS_PTRACE` and `seccomp=unconfined` so that `gdb`, `strace`, `ltrace` and `setarch -R ./program` (run with ASLR disabled, for stable memory addresses) work. This is intended for a local study lab only.
+>
+> The container uses the Linux kernel of Docker Desktop's WSL2 VM: system calls, processes and threads observed here are Linux ones. Hardware performance counters (`perf`) are generally unavailable, so treat timing measurements as approximate.
 
 ---
 
@@ -93,7 +131,7 @@ javap -verbose BytecodeDemo
 
 ```bash
 # Inspect Python bytecode instructions
-python3 -m dis script.py
+python -m dis script.py
 ```
 
 ---

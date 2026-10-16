@@ -1,0 +1,17 @@
+services:
+  lab:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    image: cs-fundamentals-lab
+    volumes:
+      - .:/workspace
+    working_dir: /workspace
+    # gdb, strace, ltrace and `setarch -R` (disable ASLR) need ptrace and
+    # unrestricted syscalls. Fine for a local study lab — not for production.
+    cap_add:
+      - SYS_PTRACE
+    security_opt:
+      - seccomp=unconfined
+    stdin_open: true
+    tty: true

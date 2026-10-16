@@ -1,0 +1,29 @@
+{
+  "name": "CS-Fundamentals Lab",
+  "build": {
+    "dockerfile": "../docker/Dockerfile",
+    "context": ".."
+  },
+  "workspaceFolder": "/workspace",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
+  "remoteUser": "ubuntu",
+  // Same privileges as compose.yaml: needed by gdb, strace, ltrace and setarch -R.
+  "runArgs": ["--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined"],
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-vscode.cpptools",
+        "vscjava.vscode-java-pack",
+        "ms-python.python"
+      ],
+      "settings": {
+        "C_Cpp.default.compilerPath": "/usr/bin/g++",
+        "C_Cpp.default.cppStandard": "c++20",
+        "C_Cpp.default.cStandard": "c17",
+        "C_Cpp.default.intelliSenseMode": "linux-gcc-x64",
+        "python.defaultInterpreterPath": "/usr/bin/python3",
+        "java.jdt.ls.java.home": "/usr/lib/jvm/java-21-openjdk-amd64"
+      }
+    }
+  }
+}
